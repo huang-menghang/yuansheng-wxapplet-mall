@@ -15,6 +15,11 @@ Page({
       url: '../logs/logs'
     })
   },
+  toHomePage: function(){
+    wx.navigateTo({
+      url: '../commodity-info/commodity-info?commodityId=41'
+    })
+  },
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({

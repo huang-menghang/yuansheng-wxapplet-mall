@@ -9,6 +9,9 @@ App({
     // 登录
     wx.login({
       success: res => {
+        // wx.request({
+        //   url: 'http://localhost:8080/yuansheng-weixinshop-server/wxapplet/login',
+        // })
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
@@ -34,6 +37,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    serverPath:'http://localhost:8080/yuansheng-weixinshop-server'
   }
 })
