@@ -13,7 +13,7 @@ Page({
       noSelect: false,
       list: []
     },
-    delBtnWidth: 120,  
+    delBtnWidth: 120,
   },
 
   //获取元素自适应后的实际宽度
@@ -281,29 +281,32 @@ Page({
       // 获取价格和库存
       wx.request({
         url: app.globalData.serverPath + '/wxapplet/commodity/specation/' + carShopBean.specation.id,
-        success:function(res){
+        success: function (res) {
           doneNumber++;
-          if (res.data[0].commoditySpecationStock < carShopBean.number){
+          if (res.data[0].commoditySpecationStock < carShopBean.number) {
             wx.showModal({
               title: '提示',
               content: carShopBean.commodityName + '(' +
-carShopBean.specation.commoditySpecation + ')库存不足,请重新购买',
-              showCancel:false
-            })
-            isFail = true;
-            wx.hideLoading();
-            return;
-          }
-          if (res.data[0].commodityPrice != carShopBean.commodityPrice){
-            wx.showModal({
-              title: '提示',
-              content: carShopBean.commodityName + '(' +
-carShopBean.specation.commoditySpecation + ')商品价格有调整,请重新购买',
+              carShopBean.specation.commoditySpecation + ')库存不足,请重新购买',
               showCancel: false
             })
             isFail = true;
             wx.hideLoading();
             return;
+          }
+          if (res.data[0].commodityPrice != carShopBean.commodityPrice) {
+            wx.showModal({
+              title: '提示',
+              content: carShopBean.commodityName + '(' +
+              carShopBean.specation.commoditySpecation + ')商品价格有调整,请重新购买',
+              showCancel: false
+            })
+            isFail = true;
+            wx.hideLoading();
+            return;
+          }
+          if(needDoneNUmber == doneNumber){
+            that.navigateToPayOrder();
           }
         }
       })
@@ -312,7 +315,7 @@ carShopBean.specation.commoditySpecation + ')商品价格有调整,请重新购�
   navigateToPayOrder: function () {
     wx.hideLoading();
     wx.navigateTo({
-      url: "/pages/to-pay-order/index"
+      url: "../pay-order/pay-order"
     })
   }
 })

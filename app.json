@@ -5,7 +5,8 @@
     "pages/home/index",
     "pages/shop-cart/shop-cart",
     "pages/template-cart/template-cart",
-    "pages/commodity-info/commodity-info"
+    "pages/commodity-info/commodity-info",
+    "pages/pay-order/pay-order"
   ],
   "window":{
     "backgroundTextStyle":"light",
