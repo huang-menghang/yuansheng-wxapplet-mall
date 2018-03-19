@@ -1,4 +1,4 @@
-/* pages/pay-order/pay-order.wxss */
+/* pages/pay-order/index.wxss */
 .container{
     background-color:#F2f2f2;
 }
