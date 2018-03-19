@@ -42,6 +42,7 @@ App({
      if(token){
        //检查token是否存在
        console.log("验证token");
+       console.log(token);
        wx.request({
          url: that.globalData.serverPath +'/wxapplet/member/checktoken',
          data:{
@@ -67,6 +68,7 @@ App({
           success:function(res){
            if(res.data.success){
               if (res.data.attributes.token){
+                console.log(res.data.attributes.token);
                 that.globalData.token = res.data.attributes.token;
              }else{
                 that.register();
@@ -102,13 +104,14 @@ App({
         //将用户信息注册
         var iv = res.iv;
         var encryptedData = res.encryptedData;
-
+        console.log("注册");
         wx.request({
           url: that.globalData.serverPath+ '/wxapplet/member/register',
           data: { code: code, encryptedData: encryptedData, iv: iv }, // 设置请求的 参数
           success: (res) => {
+            console.log(res);
             wx.hideLoading();
-            that.login();
+            //that.login();
           }
         })
 
