@@ -28,7 +28,7 @@
             </view>
         </view>
      </view>
-     <view class="peisong-way">
+     <view class="peisong-way" data="{{isNeedLogistics}}">
         <view class="row-box" wx:if="{{isNeedLogistics > 0}}">
             <view class="row-label">配送方式</view>
             <view class="right-text" wx:if="{{yunPrice > 0}}">快递</view>

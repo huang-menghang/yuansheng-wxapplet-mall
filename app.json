@@ -2,10 +2,10 @@
   "pages":[
     "pages/index/index",
     "pages/home/index",
-    "pages/shop-cart/shop-cart",
+    "pages/shop-cart/index",
     "pages/template-cart/template-cart",
-    "pages/commodity-info/commodity-info",
-    "pages/pay-order/pay-order"
+    "pages/commodity-info/index",
+    "pages/pay-order/index"
   ],
   "window":{
     "backgroundTextStyle":"light",

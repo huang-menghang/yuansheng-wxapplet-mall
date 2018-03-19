@@ -7,7 +7,7 @@ Page({
    */
   data: {
     goodsList: [],
-    isNeedLogistics: 0, // 是否需要物流信息
+    isNeedLogistics: 1, // 是否需要物流信息
     allGoodsPrice: 0,
     yunPrice: 0,
     allGoodsAndYunPrice: 0,
@@ -37,7 +37,6 @@ Page({
   onShow: function () {
     var that = this;
     var shopList = [];
-    console.log(this.data.isNeedLogistics);
     //立即购买下单
     if ("buyNow" == that.data.orderType) {
       var buyNowInfoMem = wx.getStorageSync('buyNowInfo');
@@ -49,7 +48,6 @@ Page({
       //购物车下单
       var shopCarInfoMem = wx.getStorageSync('shopCarInfo');
       if (shopCarInfoMem && shopCarInfoMem.shopList) {
-        // shopList = shopCarInfoMem.shopList
         shopList = shopCarInfoMem.shopList.filter(entity => {
           return entity.active;
         });
