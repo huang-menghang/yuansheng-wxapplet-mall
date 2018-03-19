@@ -110,8 +110,18 @@ App({
           data: { code: code, encryptedData: encryptedData, iv: iv }, // 设置请求的 参数
           success: (res) => {
             console.log(res);
-            wx.hideLoading();
-            //that.login();
+            if(res.data.success){
+              that.login();
+              wx.hideLoading();
+            }
+            else{
+              wx.showModal({
+                title: '提示',
+                content: '服务器出现问题',
+                showCancel: false
+              })
+            }
+            return ;
           }
         })
 

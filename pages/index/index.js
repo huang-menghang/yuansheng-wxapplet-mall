@@ -54,8 +54,13 @@ Page({
         swiperCurrent: e.detail.current
       })
     },
-    tapBanner:function(){
-
+    tapBanner:function(e){
+      console.log(e);
+      if(e.currentTarget.dataset.id != null){
+        wx.navigateTo({
+          url: '/pages/commodity-info/index?commodityId=' + e.currentTarget.dataset.id,
+        })
+      }
     }
 
 
