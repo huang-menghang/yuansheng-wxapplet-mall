@@ -46,6 +46,25 @@ Page({
           }
         }
       })
+      wx.request({
+        url: app.globalData.serverPath +"/wxapplet/commodity/category",
+        success: function (res) {
+          var categories = [{ id: 0, categoryName: "全部" }];
+          console.log(res);
+          if (res.statusCode == 200) {
+            for (var i = 0; i < res.data.length; i++) {
+              categories.push(res.data[i]);
+            }
+          }
+          that.setData({
+            categories: categories,
+            activeCategoryId: 0
+          });
+          //that.getGoodsList(0);
+        }
+      })
+      that.getCoupons();
+      that.getNotice();
     },
     //轮播事件
     swiperchange: function (e) {
@@ -61,7 +80,47 @@ Page({
           url: '/pages/commodity-info/index?commodityId=' + e.currentTarget.dataset.id,
         })
       }
-    }
+    },
+    tabClick: function (e) {
+      this.setData({
+        activeCategoryId: e.currentTarget.id
+      });
+      //this.getGoodsList(this.data.activeCategoryId);
+    },
+    getNotice: function () {
+      var that = this;
+      wx.request({
+        url: app.globalData.serverPath + '/wxapplet/news',
+        data: { pageSize: 5 },
+        success: function (res) {
+          console.log(res);
+          if (res.statusCode == 200) {
+            console.log(res.data);
+            that.setData({
+              noticeList: res.data
+            });
+          }
+        }
+      })
+    },
+    getCoupons: function () {
+      var that = this;
+      console.log("获取优惠卷");
+      // wx.request({
+      //   url:app.globalData.serverPath+'/wxapplet/coupons',
+      //   data: {
+      //     type: ''
+      //   },
+      //   success: function (res) {
+      //     if (res.data.code == 0) {
+      //       that.setData({
+      //         hasNoCoupons: false,
+      //         coupons: res.data.data
+      //       });
+      //     }
+      //   }
+      // })
+    },
 
 
 
