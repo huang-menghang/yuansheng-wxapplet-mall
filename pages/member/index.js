@@ -186,7 +186,9 @@ Page({
   selectAddress:function(){
     console.log("ddd")
     wx.chooseAddress({
-      success: function (res) { },
+      success: function (res) {
+        
+       },
       fail: function (res) { },
       complete: function (res) { },
     })

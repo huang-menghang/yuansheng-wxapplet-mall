@@ -73,6 +73,15 @@ Page({
         swiperCurrent: e.detail.current
       })
     },
+    scroll: function (e) {
+      //  console.log(e) ;
+      var that = this, scrollTop = that.data.scrollTop;
+      that.setData({
+        scrollTop: e.detail.scrollTop
+      })
+      // console.log('e.detail.scrollTop:'+e.detail.scrollTop) ;
+      // console.log('scrollTop:'+scrollTop)
+    },
     tapBanner:function(e){
       console.log(e);
       if(e.currentTarget.dataset.id != null){

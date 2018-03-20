@@ -39,6 +39,12 @@ swiper-item image {
   opacity: 1;
 }
 
+.type-container{
+  width: 100%;
+  height: 88rpx;
+  background-color: #fff;
+  overflow: hidden;
+}
 .type-navbar{
   white-space: nowrap;
   height: 88rpx;
