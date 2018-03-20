@@ -5,7 +5,7 @@ Page({
     balance: 0,
     freeze: 0,
     score: 0,
-    score_sign_continuous: 0
+    score_sign_continuous: 0,
   },
   onLoad() {
 
@@ -183,7 +183,9 @@ Page({
       url: "/pages/withdraw/index"
     })
   },
+  //查看收货地址
   selectAddress:function(){
+    var that = this;
     console.log("ddd")
     wx.chooseAddress({
       success: function (res) {
@@ -192,6 +194,12 @@ Page({
       fail: function (res) { },
       complete: function (res) { },
     })
+  },
+  //查看优惠券
+  selectCoupons:function(){
+    console.log("优惠券");
+    wx.openCard({
+      cardList: [],
+    })
   }
- 
 })

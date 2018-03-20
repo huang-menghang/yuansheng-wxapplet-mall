@@ -46,6 +46,7 @@ Page({
         });
       }
     })
+    console.log("e.commodityId:" + e.commodityId);
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/commodity/' + e.commodityId,
       success: function (res) {

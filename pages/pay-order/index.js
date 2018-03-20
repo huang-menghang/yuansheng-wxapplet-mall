@@ -14,6 +14,8 @@ Page({
     goodsJsonStr: "",
     orderType: "", //订单类型，购物车下单或立即支付下单，默认是购物车，
 
+    curAddressData:{},
+
     hasNoCoupons: true,
     coupons: [],
     youhuijine: 0, //优惠券金额
@@ -41,7 +43,7 @@ Page({
     //立即购买下单
     if ("buyNow" == that.data.orderType) {
       var buyNowInfoMem = wx.getStorageSync('buyNowInfo');
-      console.log("buyNowInfoMem:" + buyNowInfoMem.shopList);
+
       if (buyNowInfoMem && buyNowInfoMem.shopList) {
         shopList = buyNowInfoMem.shopList
       }
@@ -53,8 +55,7 @@ Page({
           return entity.active;
         });
       }
-    }
-    console.log(shopList);
+    };
     that.setData({
       goodsList: shopList,
     });
@@ -95,26 +96,16 @@ Page({
         })
         return;
       }
-      postData.provinceId = that.data.curAddressData.provinceId;
-      postData.cityId = that.data.curAddressData.cityId;
-      if (that.data.curAddressData.districtId) {
-        postData.districtId = that.data.curAddressData.districtId;
-      }
-      postData.address = that.data.curAddressData.address;
-      postData.linkMan = that.data.curAddressData.linkMan;
-      postData.mobile = that.data.curAddressData.mobile;
-      postData.code = that.data.curAddressData.code;
+      postData.addressId = that.data.curAddressData.id;
     }
     if (that.data.curCoupon) {
       postData.couponId = that.data.curCoupon.id;
     }
     if (!e) {
       postData.calculate = "true";
-    }
-
-
+    };
     wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/order/create',
+      url: app.globalData.serverPath + '/order',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -173,12 +164,12 @@ Page({
   initShippingAddress: function () {
     var that = this;
     wx.request({
-      url: app.globalData.serverPath + '/wxapplet/address/5',
+      url: app.globalData.serverPath + '/wxapplet/address/2',
       data: {
         token: app.globalData.token
       },
       success: (res) => {
-        console.log(res.data);
+
         if (res.data[0]) {
           that.setData({
             curAddressData: res.data[0]
@@ -213,14 +204,98 @@ Page({
   },
 
   addAddress: function () {
-    wx.navigateTo({
-      url: "/pages/address-add/index"
-    })
+    var that = this;
+    console.log("選擇地址")
+    wx.chooseAddress({
+      success: function (res) {
+        var provinceName = res.provinceName;
+        var cityName = res.cityName;
+        var diatrictName = res.countyName;
+        var address = res.detailInfo;
+        var mobile = res.telNumber;
+        var nickname = res.userName;
+        console.log("res:" + res);
+        wx.request({
+          url: app.globalData.serverPath + '/wxapplet/address',
+          method: "POST",
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            provinceName: provinceName,
+            cityName: cityName,
+            diatrictName: diatrictName,
+            address: address,
+            mobile: mobile,
+            nickname: nickname,
+          },
+          dataType: "json",
+          success: function (res) {
+            if(res.data.success){
+              wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+              })
+            }else{
+              wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+              })
+            }
+          }
+        })
+      }
+    })   
   },
   selectAddress: function () {
-    wx.navigateTo({
-      url: "/pages/select-address/index"
-    })
+    // wx.navigateTo({
+    //   url: "/pages/select-address/index"
+    // })
+    var that = this;
+    console.log("選擇地址")
+    wx.chooseAddress({
+      success: function (res) {
+        var provinceName = res.provinceName;
+        var cityName = res.cityName;
+        var diatrictName = res.countyName;
+        var address = res.detailInfo;
+        var mobile = res.telNumber;
+        var nickname = res.userName;
+        wx.request({
+          url: app.globalData.serverPath + '/wxapplet/address',
+          method:"POST",
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          data:{
+            provinceName: provinceName,
+            cityName: cityName,
+            diatrictName: diatrictName,
+            address: address,
+            mobile: mobile,
+            nickname: nickname,
+          },
+          dataType:"json",
+          success:function(res){
+            console.log("res:" + res.data.success);
+            
+            if (res.data.success) {
+              console.log("res:" + res.data.msg);
+              wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+              })
+            } else {
+              wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+              })
+            }
+          }
+        })
+      }
+    })  
+
   },
   getCoupons: function () {
     var that = this;

@@ -56,9 +56,12 @@ Page({
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), shopList);
   },
   toIndexPage: function () {
-    wx.switchTab({
-      url: "/pages/index/index"
-    });
+    wx.navigateTo({
+      url: '/pages/commodity-info/index?commodityId=39',
+    })
+    // wx.switchTab({
+    //   url: "/pages/commodity-info/index?commodityId=5"
+    // });
   },
 
   touchS: function (e) {
