@@ -1,4 +1,4 @@
-<!--pages/shop-cart/shop-cart.wxml-->
+<!--pages/shop-cart/index.wxml-->
 <import src="../template-cart/template-cart.wxml"/>
 
 <view class="container">

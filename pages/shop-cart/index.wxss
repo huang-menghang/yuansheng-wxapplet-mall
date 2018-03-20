@@ -1,4 +1,4 @@
-/* pages/shop-cart/shop-cart.wxss */
+/* pages/shop-cart/index.wxss */
 @import "../template-cart/template-cart.wxss";
 page{
   min-height: 100%;

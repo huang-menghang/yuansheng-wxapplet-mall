@@ -1,4 +1,4 @@
-// pages/shop-cart/shop-cart.js
+// pages/shop-cart/index.js
 var app = getApp()
 Page({
 
@@ -138,7 +138,6 @@ Page({
     var allSelect = false;
     for (var i = 0; i < list.length; i++) {
       var curItem = list[i];
-      console.log(curItem.active);
       if (curItem.active) {
         allSelect = true;
       } else {
@@ -157,7 +156,6 @@ Page({
         noSelect++;
       }
     }
-    console.log("noSelect:" + noSelect);
     if (noSelect == list.length) {
       return true;
     } else {
@@ -315,7 +313,7 @@ Page({
   navigateToPayOrder: function () {
     wx.hideLoading();
     wx.navigateTo({
-      url: "../pay-order/pay-order"
+      url: "/pages/pay-order/index"
     })
   }
 })

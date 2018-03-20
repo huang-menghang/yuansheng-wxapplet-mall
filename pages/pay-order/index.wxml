@@ -1,4 +1,4 @@
-<!--pages/pay-order/pay-order.wxml-->
+<!--pages/pay-order/index.wxml-->
 <view class="container">
      <form bindsubmit="createOrder" report-submit="true">
      <view class="address-box" wx:if="{{1 > 0}}">
@@ -22,7 +22,7 @@
                     <view class="goods-price">¥ {{item.commodityPrice}}</view>
                 </view>
                 <view class="arow">
-                    <view class="goods-label">{{item.specation.commoditySpecation}}</view>
+                    <view class="goods-label">规格：{{item.specation.commoditySpecation}}</view>
                     <view class="goods-num">x {{item.number}}</view>
                 </view>
             </view>
@@ -55,13 +55,13 @@
         </view>
      </view>
      <view class="goods-info">
-        <view class="row-box" wx:if="{{isNeedLogistics > 0 && yunPrice > 0}}">
+        <view class="row-box">
             <view class="row-label">商品金额</view>
             <view class="right-text">¥ {{allGoodsPrice}}</view>
         </view>
-        <view class="row-box" wx:if="{{isNeedLogistics > 0 && yunPrice > 0}}">
+        <view class="row-box">
             <view class="row-label">运费</view>
-            <view class="right-text">+ ¥ {{yunPrice}}</view>
+            <view class="right-text">+ ¥ 0.00</view>
         </view>
         <view class="row-box" wx:if="{{!hasNoCoupons}}">
             <view class="row-label">优惠券</view>
@@ -70,7 +70,7 @@
      </view>
      <view class="jiesuan-box">
         <view class="left-price">
-            <view class="total">合计：¥ {{allGoodsAndYunPrice - youhuijine}}</view>
+            <view class="total">合计：¥ {{payPrice}}</view>
         </view>
         <button class="to-pay-btn" formType="submit">提交订单</button>
     </view>

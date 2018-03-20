@@ -1,4 +1,4 @@
-<!--pages/commodity-info/commodity-info.wxml-->
+<!--pages/commodity-info/index.wxml-->
 <import src="../../wxParse/wxParse.wxml" />
 <view class="container"> 
    <view class="swiper-container" wx:if="{{!goodsDetail.basicInfo.videoId}}">

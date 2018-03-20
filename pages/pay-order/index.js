@@ -1,4 +1,4 @@
-// pages/pay-order/pay-order.js
+// pages/pay-order/index.js
 var app = getApp();
 Page({
 
@@ -7,7 +7,7 @@ Page({
    */
   data: {
     goodsList: [],
-    isNeedLogistics: 1, // 是否需要物流信息
+    isNeedLogistics: 0, // 是否需要物流信息
     allGoodsPrice: 0,
     yunPrice: 0,
     allGoodsAndYunPrice: 0,
@@ -17,7 +17,8 @@ Page({
     hasNoCoupons: true,
     coupons: [],
     youhuijine: 0, //优惠券金额
-    curCoupon: null // 当前选择使用的优惠券
+    curCoupon: null, // 当前选择使用的优惠券
+    payPrice:0,
   },
 
   /**
@@ -53,6 +54,7 @@ Page({
         });
       }
     }
+    console.log(shopList);
     that.setData({
       goodsList: shopList,
     });
@@ -140,7 +142,7 @@ Page({
             allGoodsAndYunPrice: res.data.data.amountLogistics + res.data.data.amountTotle,
             yunPrice: res.data.data.amountLogistics
           });
-          that.getMyCoupons();
+          that.getCoupons();
           return;
         }
         // 配置模板消息推送
@@ -172,9 +174,9 @@ Page({
     var that = this;
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/address/5',
-      // data: {
-      //   token: app.globalData.token
-      // },
+      data: {
+        token: app.globalData.token
+      },
       success: (res) => {
         console.log(res.data);
         if (res.data[0]) {
@@ -186,12 +188,12 @@ Page({
             curAddressData: null
           });
         }
-        that.processYunfei();
+        that.totlePrice();
       }
     })
   },
-
-  processYunfei: function () {
+  //商品总价格
+  totlePrice: function () {
     var that = this;
     var goodsList = this.data.goodsList;
     var goodsJsonStr = "[";
@@ -200,36 +202,16 @@ Page({
 
     for (let i = 0; i < goodsList.length; i++) {
       let carShopBean = goodsList[i];
-      if (carShopBean.logistics) {
-        isNeedLogistics = 1;
-      }
-      allGoodsPrice += carShopBean.price * carShopBean.number;
-
-      var goodsJsonStrTmp = '';
-      if (i > 0) {
-        goodsJsonStrTmp = ",";
-      }
-
-
-      let inviter_id = 0;
-      let inviter_id_storge = wx.getStorageSync('inviter_id_' + carShopBean.goodsId);
-      if (inviter_id_storge) {
-        inviter_id = inviter_id_storge;
-      }
-
-
-      goodsJsonStrTmp += '{"goodsId":' + carShopBean.goodsId + ',"number":' + carShopBean.number + ',"propertyChildIds":"' + carShopBean.propertyChildIds + '","logisticsType":0, "inviter_id":' + inviter_id + '}';
-      goodsJsonStr += goodsJsonStrTmp;
-
-
+      allGoodsPrice += carShopBean.commodityPrice * carShopBean.number;
     }
-    goodsJsonStr += "]";
     that.setData({
-      isNeedLogistics: isNeedLogistics,
-      goodsJsonStr: goodsJsonStr
+      isNeedLogistics: 1,
+      allGoodsPrice: allGoodsPrice,
+      payPrice: allGoodsPrice - that.data.youhuijine,
     });
     that.createOrder();
   },
+
   addAddress: function () {
     wx.navigateTo({
       url: "/pages/address-add/index"
@@ -240,7 +222,7 @@ Page({
       url: "/pages/select-address/index"
     })
   },
-  getMyCoupons: function () {
+  getCoupons: function () {
     var that = this;
     wx.request({
       url: 'https://api.it120.cc/' + app.globalData.subDomain + '/discounts/my',

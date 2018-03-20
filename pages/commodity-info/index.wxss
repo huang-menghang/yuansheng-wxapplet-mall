@@ -1,4 +1,4 @@
-/* pages/commodity-info/commodity-info.wxss */
+/* pages/commodity-info/index.wxss */
 @import "/wxParse/wxParse.wxss";
 
 .container {
