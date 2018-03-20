@@ -1,7 +1,6 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/home/index",
     "pages/shop-cart/index",
     "pages/template-cart/template-cart",
     "pages/commodity-info/index",
