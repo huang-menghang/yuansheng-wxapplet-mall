@@ -9,8 +9,8 @@ Page({
     goodsList: [],
     isNeedLogistics: 0, // 是否需要物流信息
     allGoodsPrice: 0,
-    yunPrice: 0,
-    allGoodsAndYunPrice: 0,
+    // yunPrice: 0,
+    // allGoodsAndYunPrice: 0,
     goodsJsonStr: "",
     orderType: "", //订单类型，购物车下单或立即支付下单，默认是购物车，
 
@@ -84,7 +84,7 @@ Page({
     var postData = {
       token: loginToken,
       goodsJsonStr: that.data.goodsJsonStr,
-      remark: remark
+      remarks: remark
     };
     if (that.data.isNeedLogistics > 0) {
       if (!that.data.curAddressData) {
@@ -96,24 +96,23 @@ Page({
         })
         return;
       }
-      postData.addressId = that.data.curAddressData.id;
+      postData.expressAddressId = that.data.curAddressData.id;
     }
-    if (that.data.curCoupon) {
-      postData.couponId = that.data.curCoupon.id;
-    }
-    if (!e) {
-      postData.calculate = "true";
-    };
+    // if (that.data.curCoupon) {
+    //   postData.couponId = that.data.curCoupon.id;
+    // }
+    
     wx.request({
-      url: app.globalData.serverPath + '/order',
+      url: app.globalData.serverPath + '/wxapplet/payOrder',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: postData, // 设置请求的 参数
       success: (res) => {
+        var payOrder = res.data[0];
         wx.hideLoading();
-        if (res.data.code != 0) {
+        if (res.data.success != null && !res.data.success){
           wx.showModal({
             title: '错误',
             content: res.data.msg,
@@ -129,30 +128,28 @@ Page({
         if (!e) {
           that.setData({
             isNeedLogistics: res.data.data.isNeedLogistics,
-            allGoodsPrice: res.data.data.amountTotle,
-            allGoodsAndYunPrice: res.data.data.amountLogistics + res.data.data.amountTotle,
-            yunPrice: res.data.data.amountLogistics
+            allGoodsPrice: res.data.data.amountTotle
           });
           that.getCoupons();
           return;
         }
         // 配置模板消息推送
-        var postJsonString = {};
-        postJsonString.keyword1 = { value: res.data.data.dateAdd, color: '#173177' }
-        postJsonString.keyword2 = { value: res.data.data.amountReal + '元', color: '#173177' }
-        postJsonString.keyword3 = { value: res.data.data.orderNumber, color: '#173177' }
-        postJsonString.keyword4 = { value: '订单已关闭', color: '#173177' }
-        postJsonString.keyword5 = { value: '您可以重新下单，请在30分钟内完成支付', color: '#173177' }
-        app.sendTempleMsg(res.data.data.id, -1,
-          'mGVFc31MYNMoR9Z-A9yeVVYLIVGphUVcK2-S2UdZHmg', e.detail.formId,
-          'pages/index/index', JSON.stringify(postJsonString));
-        postJsonString = {};
-        postJsonString.keyword1 = { value: '您的订单已发货，请注意查收', color: '#173177' }
-        postJsonString.keyword2 = { value: res.data.data.orderNumber, color: '#173177' }
-        postJsonString.keyword3 = { value: res.data.data.dateAdd, color: '#173177' }
-        app.sendTempleMsg(res.data.data.id, 2,
-          'Arm2aS1rsklRuJSrfz-QVoyUzLVmU2vEMn_HgMxuegw', e.detail.formId,
-          'pages/order-details/index?id=' + res.data.data.id, JSON.stringify(postJsonString));
+        // var postJsonString = {};
+        // postJsonString.keyword1 = { value: res.data.data.dateAdd, color: '#173177' }
+        // postJsonString.keyword2 = { value: res.data.data.amountReal + '元', color: '#173177' }
+        // postJsonString.keyword3 = { value: res.data.data.orderNumber, color: '#173177' }
+        // postJsonString.keyword4 = { value: '订单已关闭', color: '#173177' }
+        // postJsonString.keyword5 = { value: '您可以重新下单，请在30分钟内完成支付', color: '#173177' }
+        // app.sendTempleMsg(res.data.data.id, -1,
+        //   'mGVFc31MYNMoR9Z-A9yeVVYLIVGphUVcK2-S2UdZHmg', e.detail.formId,
+        //   'pages/index/index', JSON.stringify(postJsonString));
+        // postJsonString = {};
+        // postJsonString.keyword1 = { value: '您的订单已发货，请注意查收', color: '#173177' }
+        // postJsonString.keyword2 = { value: res.data.data.orderNumber, color: '#173177' }
+        // postJsonString.keyword3 = { value: res.data.data.dateAdd, color: '#173177' }
+        // app.sendTempleMsg(res.data.data.id, 2,
+        //   'Arm2aS1rsklRuJSrfz-QVoyUzLVmU2vEMn_HgMxuegw', e.detail.formId,
+        //   'pages/order-details/index?id=' + res.data.data.id, JSON.stringify(postJsonString));
         // 下单成功，跳转到订单管理界面
         wx.redirectTo({
           url: "/pages/order-list/index"
@@ -163,6 +160,7 @@ Page({
 
   initShippingAddress: function () {
     var that = this;
+    console.log("userInfo" + app.globalData.userInfo);
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/address/2',
       data: {
@@ -187,25 +185,34 @@ Page({
   totlePrice: function () {
     var that = this;
     var goodsList = this.data.goodsList;
-    var goodsJsonStr = "[";
+    var goodsJsonStr = "";
     var isNeedLogistics = 0;
     var allGoodsPrice = 0;
 
     for (let i = 0; i < goodsList.length; i++) {
       let carShopBean = goodsList[i];
       allGoodsPrice += carShopBean.commodityPrice * carShopBean.number;
+
+      var goodsJsonStrTmp = '';
+      if (i > 0) {
+        goodsJsonStrTmp = ",";
+      }
+
+      goodsJsonStrTmp += '{"commodityId":' + carShopBean.commodityId + ';"commodityNumber":' + carShopBean.number + ';"specationId":' + carShopBean.specation.id + ';"commodityPrice":' + carShopBean.specation.commodityPrice + '}';
+      goodsJsonStr += goodsJsonStrTmp; 
+      console.log("goodsJsonStrTmp" + i + ":" + goodsJsonStrTmp);
     }
     that.setData({
       isNeedLogistics: 1,
       allGoodsPrice: allGoodsPrice,
       payPrice: allGoodsPrice - that.data.youhuijine,
-    });
-    that.createOrder();
+      goodsJsonStr: goodsJsonStr
+    })
   },
 
   addAddress: function () {
     var that = this;
-    console.log("選擇地址")
+    console.log("添加地址")
     wx.chooseAddress({
       success: function (res) {
         var provinceName = res.provinceName;
@@ -213,8 +220,8 @@ Page({
         var diatrictName = res.countyName;
         var address = res.detailInfo;
         var mobile = res.telNumber;
-        var nickname = res.userName;
-        console.log("res:" + res);
+        var consignee = res.userName;
+        console.log("consignee:" + consignee);
         wx.request({
           url: app.globalData.serverPath + '/wxapplet/address',
           method: "POST",
@@ -227,19 +234,18 @@ Page({
             diatrictName: diatrictName,
             address: address,
             mobile: mobile,
-            nickname: nickname,
+            consignee: consignee,
           },
           dataType: "json",
           success: function (res) {
-            if(res.data.success){
+            if (res.data.success != null && !res.data.success){
               wx.showModal({
                 title: '提示',
                 content: res.data.msg,
               })
             }else{
-              wx.showModal({
-                title: '提示',
-                content: res.data.msg,
+              that.set({
+                curAddressData:res.data[0]
               })
             }
           }
@@ -248,11 +254,8 @@ Page({
     })   
   },
   selectAddress: function () {
-    // wx.navigateTo({
-    //   url: "/pages/select-address/index"
-    // })
-    var that = this;
-    console.log("選擇地址")
+    var that = this
+    console.log("选择地址")
     wx.chooseAddress({
       success: function (res) {
         var provinceName = res.provinceName;
@@ -260,7 +263,7 @@ Page({
         var diatrictName = res.countyName;
         var address = res.detailInfo;
         var mobile = res.telNumber;
-        var nickname = res.userName;
+        var consignee = res.userName;
         wx.request({
           url: app.globalData.serverPath + '/wxapplet/address',
           method:"POST",
@@ -273,22 +276,18 @@ Page({
             diatrictName: diatrictName,
             address: address,
             mobile: mobile,
-            nickname: nickname,
+            consignee: consignee,
           },
           dataType:"json",
           success:function(res){
-            console.log("res:" + res.data.success);
-            
-            if (res.data.success) {
-              console.log("res:" + res.data.msg);
+            if (res.data.success != null && !res.data.success) {
               wx.showModal({
                 title: '提示',
                 content: res.data.msg,
               })
             } else {
-              wx.showModal({
-                title: '提示',
-                content: res.data.msg,
+              that.setData({
+                curAddressData: res.data[0]
               })
             }
           }
