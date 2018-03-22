@@ -84,7 +84,8 @@ Page({
     var postData = {
       token: loginToken,
       goodsJsonStr: that.data.goodsJsonStr,
-      remarks: remark
+      remarks: remark,
+      payPrice:that.data.payPrice
     };
     if (that.data.isNeedLogistics > 0) {
       if (!that.data.curAddressData) {

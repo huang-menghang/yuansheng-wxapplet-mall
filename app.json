@@ -6,13 +6,15 @@
     "pages/commodity-info/index",
     "pages/pay-order/index",
     "pages/member/index",
-    "pages/order-list/index"
+    "pages/order-list/index",
+    "pages/order-info/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh":true
   },
   "tabBar": {
     "color": "#6e6d6b",

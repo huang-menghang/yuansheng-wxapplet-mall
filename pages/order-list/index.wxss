@@ -154,3 +154,9 @@
     border:1px solid #e64340;
     color: #e64340;
 }
+.no-more-goods{
+  text-align: center;
+  font-size: 24rpx;
+  padding-bottom:48rpx; 
+  color: #999;
+}
