@@ -15,9 +15,9 @@
     </view>
   </view> -->
   <view class="my-item" style='background:none;display:flex;'>
-    <view>当前积分 {{score}} </view>
-    <button wx:if="{{score_sign_continuous == 0}}" style='height:80rpx;margin-right:70rpx;' bindtap="scoresign">每日签到</button>
-    <button wx:if="{{score_sign_continuous > 0}}" disabled='true' style='height:80rpx;margin-right:70rpx;'>已连续{{score_sign_continuous}}天签到</button>
+    <view>当前积分：{{signInPoints}} </view>
+    <button wx:if="{{!signIn}}" style='height:80rpx;margin-right:70rpx;' bindtap="scoresign">每日签到</button>
+    <button wx:if="{{signIn}}" disabled='true' style='height:80rpx;margin-right:70rpx;'>今日已签到</button>
   </view>
   <view class="my-item">
     <navigator url="/pages/order-list/index" hover-class="navigator-hover">我的订单</navigator>

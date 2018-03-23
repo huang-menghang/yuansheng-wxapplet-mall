@@ -10,7 +10,7 @@
                 <image wx:elif="{{orderInfo.status==4 || orderInfo.status==5}}" class="icon" src="/images/order-details/icon-jycg.png"></image>
             </view>
             <view class="right-text">
-                <view class="status red">未付款</view>
+                <view class="status red" hidden="{{orderInfo.status==1?false:true}}">未付款</view>
                 <view class="des" hidden="{{orderInfo.status==1?false:true}}">请于11时59分59秒内付款，超时订单将自动关闭</view>
             </view>
         </view>

@@ -85,7 +85,8 @@ Page({
       token: loginToken,
       goodsJsonStr: that.data.goodsJsonStr,
       remarks: remark,
-      payPrice:that.data.payPrice
+      payPrice:that.data.payPrice,
+      appletMemberId: app.globalData.appletMemberId
     };
     if (that.data.isNeedLogistics > 0) {
       if (!that.data.curAddressData) {
@@ -162,13 +163,14 @@ Page({
   initShippingAddress: function () {
     var that = this;
     console.log("userInfo" + app.globalData.userInfo);
+    var id = app.globalData.appletMemberId;
     wx.request({
-      url: app.globalData.serverPath + '/wxapplet/address/2',
+      url: app.globalData.serverPath + '/wxapplet/address/' + id,
       data: {
         token: app.globalData.token
       },
       success: (res) => {
-
+        
         if (res.data[0]) {
           that.setData({
             curAddressData: res.data[0]
@@ -213,7 +215,7 @@ Page({
 
   addAddress: function () {
     var that = this;
-    console.log("添加地址")
+    // console.log("添加地址")
     wx.chooseAddress({
       success: function (res) {
         var provinceName = res.provinceName;
@@ -236,6 +238,7 @@ Page({
             address: address,
             mobile: mobile,
             consignee: consignee,
+            appletMemberId: app.globalData.appletMemberId
           },
           dataType: "json",
           success: function (res) {
@@ -278,6 +281,7 @@ Page({
             address: address,
             mobile: mobile,
             consignee: consignee,
+            appletMemberId: app.globalData.appletMemberId
           },
           dataType:"json",
           success:function(res){

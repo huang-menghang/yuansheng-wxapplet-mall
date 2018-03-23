@@ -165,6 +165,7 @@ Page({
       token: app.globalData.token,
       pageNum: that.data.pageNum,
       pageSize: that.data.pageSize,
+      appletMemberId: app.globalData.appletMemberId
     };
     postData.status = that.data.currentType;
     wx.request({

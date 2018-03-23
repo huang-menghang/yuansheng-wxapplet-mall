@@ -5,16 +5,15 @@ Page({
     balance: 0,
     freeze: 0,
     score: 0,
-    score_sign_continuous: 0,
+    signInPoints: 0,//用户积分
+    signIn:false,//用戶是否签到
   },
   onLoad() {
 
   },
   onShow() {
     this.getUserInfo();
-    // this.setData({
-    //   version: app.globalData.version
-    // });
+
     this.getUserApiInfo();
     this.getUserAmount();
     this.checkScoreSign();
@@ -114,15 +113,19 @@ Page({
   },
   checkScoreSign: function () {
     var that = this;
+    var postData={
+      token: app.globalData.token,
+      id: app.globalData.appletMemberId
+    }
+    console.log(postData);
     wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/score/today-signed',
-      data: {
-        token: app.globalData.token
-      },
+      url: app.globalData.serverPath + '/wxapplet/member/todaySigned',
+      data: postData,
       success: function (res) {
-        if (res.data.code == 0) {
+        if (res.statusCode == 200) {
           that.setData({
-            score_sign_continuous: res.data.data.continuous
+            signInPoints: res.data[0].signInPoints,
+            signIn: res.data[0].signIn
           });
         }
       }
@@ -131,18 +134,24 @@ Page({
   scoresign: function () {
     var that = this;
     wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/score/sign',
+      url: app.globalData.serverPath + '/wxapplet/member/signIn',
       data: {
-        token: app.globalData.token
+        token: app.globalData.token,
+        signInPoints: 5,
+        id: app.globalData.appletMemberId
+      },
+      method: 'POST',
+      header: {
+        "content-type": "application/x-www-form-urlencoded",
       },
       success: function (res) {
-        if (res.data.code == 0) {
-          that.getUserAmount();
+        if (res.statusCode == 200) {
+          // that.getUserAmount();
           that.checkScoreSign();
         } else {
           wx.showModal({
             title: '错误',
-            content: res.data.msg,
+            content: "签到失败，请重新签到",
             showCancel: false
           })
         }

@@ -50,15 +50,18 @@ Page({
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/commodity/' + e.commodityId,
       success: function (res) {
-        that.setData({
-          hasMoreSelect: true,
-          commoditySpecations: res.data[0].commoditySpecations,
-          commodity: res.data[0],
-          commodityPrice: res.data[0].commodityPriceMin,
-          swiperImagePath: res.data[0].imagePathMap.carouselImagePaths,
-          showImagePath: res.data[0].imagePathMap.showImagePath[0],
-          commodityIntroduceContent: that.getCommodityIntroduceContent(res.data[0].imagePathMap.infoImagePaths),
-        });
+        console.log("res:" + res.statusCode);
+        if (res.statusCode == 200){
+          that.setData({
+            hasMoreSelect: true,
+            commoditySpecations: res.data[0].commoditySpecations,
+            commodity: res.data[0],
+            commodityPrice: res.data[0].commodityPriceMin,
+            swiperImagePath: res.data[0].imagePathMap.carouselImagePaths,
+            showImagePath: res.data[0].imagePathMap.showImagePath[0],
+            commodityIntroduceContent: that.getCommodityIntroduceContent(res.data[0].imagePathMap.infoImagePaths),
+          });
+        }
         WxParse.wxParse('article', 'html', that.data.commodityIntroduceContent, that, 5);
       }
     })
