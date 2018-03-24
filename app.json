@@ -7,7 +7,8 @@
     "pages/pay-order/index",
     "pages/member/index",
     "pages/order-list/index",
-    "pages/order-info/index"
+    "pages/order-info/index",
+    "pages/coupons/index"
   ],
   "window":{
     "backgroundTextStyle":"light",

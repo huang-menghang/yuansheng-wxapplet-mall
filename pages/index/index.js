@@ -129,20 +129,20 @@ Page({
     getCoupons: function () {
       var that = this;
       console.log("获取优惠卷");
-      // wx.request({
-      //   url:app.globalData.serverPath+'/wxapplet/coupons',
-      //   data: {
-      //     type: ''
-      //   },
-      //   success: function (res) {
-      //     if (res.data.code == 0) {
-      //       that.setData({
-      //         hasNoCoupons: false,
-      //         coupons: res.data.data
-      //       });
-      //     }
-      //   }
-      // })
+      wx.request({
+        url: app.globalData.serverPath + '/wxapplet/coupon',
+        data: {
+          type: ''
+        },
+        success: function (res) {
+          if (res.data) {
+            that.setData({
+              hasNoCoupons: false,
+              coupons: res.data
+            });
+          }
+        }
+      })
     },
     getGoodsList: function (categoryId){
       var that = this;
