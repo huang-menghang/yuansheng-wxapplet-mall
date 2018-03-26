@@ -14,13 +14,13 @@ Page({
     goodsJsonStr: "",
     orderType: "", //订单类型，购物车下单或立即支付下单，默认是购物车，
 
-    curAddressData:{},
+    curAddressData: {},
 
     hasNoCoupons: true,
     coupons: [],
     youhuijine: 0, //优惠券金额
     curCoupon: null, // 当前选择使用的优惠券
-    payPrice:0,
+    payPrice: 0,
   },
 
   /**
@@ -85,8 +85,8 @@ Page({
       token: loginToken,
       goodsJsonStr: that.data.goodsJsonStr,
       remarks: remark,
-      payPrice:that.data.payPrice,
-      appletMemberId: app.globalData.appletMemberId
+      payPrice: that.data.payPrice,
+      appletMemberId: app.globalData.appletMember.id
     };
     if (that.data.isNeedLogistics > 0) {
       if (!that.data.curAddressData) {
@@ -103,7 +103,7 @@ Page({
     // if (that.data.curCoupon) {
     //   postData.couponId = that.data.curCoupon.id;
     // }
-    
+
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/payOrder',
       method: 'POST',
@@ -114,7 +114,7 @@ Page({
       success: (res) => {
         var payOrder = res.data[0];
         wx.hideLoading();
-        if (res.data.success != null && !res.data.success){
+        if (res.data.success != null && !res.data.success) {
           wx.showModal({
             title: '错误',
             content: res.data.msg,
@@ -163,14 +163,14 @@ Page({
   initShippingAddress: function () {
     var that = this;
     console.log("userInfo" + app.globalData.userInfo);
-    var id = app.globalData.appletMemberId;
+    var id = app.globalData.appletMember.id;
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/address/' + id,
       data: {
         token: app.globalData.token
       },
       success: (res) => {
-        
+
         if (res.data[0]) {
           that.setData({
             curAddressData: res.data[0]
@@ -202,7 +202,7 @@ Page({
       }
 
       goodsJsonStrTmp += '{"commodityId":' + carShopBean.commodityId + ';"commodityNumber":' + carShopBean.number + ';"specationId":' + carShopBean.specation.id + ';"commodityPrice":' + carShopBean.specation.commodityPrice + '}';
-      goodsJsonStr += goodsJsonStrTmp; 
+      goodsJsonStr += goodsJsonStrTmp;
       console.log("goodsJsonStrTmp" + i + ":" + goodsJsonStrTmp);
     }
     that.setData({
@@ -238,24 +238,25 @@ Page({
             address: address,
             mobile: mobile,
             consignee: consignee,
-            appletMemberId: app.globalData.appletMemberId
+            appletMemberId: app.globalData.appletMember.id
           },
           dataType: "json",
           success: function (res) {
-            if (res.data.success != null && !res.data.success){
+            if (res.data.success != null && !res.data.success) {
               wx.showModal({
                 title: '提示',
                 content: res.data.msg,
               })
-            }else{
-              that.set({
-                curAddressData:res.data[0]
+            } else {
+              console.log("地址ID:" + res.data[0].id);
+              that.setData({
+                curAddressData: res.data[0]
               })
             }
           }
         })
       }
-    })   
+    })
   },
   selectAddress: function () {
     var that = this
@@ -270,27 +271,28 @@ Page({
         var consignee = res.userName;
         wx.request({
           url: app.globalData.serverPath + '/wxapplet/address',
-          method:"POST",
+          method: "POST",
           header: {
             'content-type': 'application/x-www-form-urlencoded'
           },
-          data:{
+          data: {
             provinceName: provinceName,
             cityName: cityName,
             diatrictName: diatrictName,
             address: address,
             mobile: mobile,
             consignee: consignee,
-            appletMemberId: app.globalData.appletMemberId
+            appletMemberId: app.globalData.appletMember.id
           },
-          dataType:"json",
-          success:function(res){
+          dataType: "json",
+          success: function (res) {
             if (res.data.success != null && !res.data.success) {
               wx.showModal({
                 title: '提示',
                 content: res.data.msg,
               })
             } else {
+              console.log("地址ID:" + res.data[0].id);
               that.setData({
                 curAddressData: res.data[0]
               })
@@ -298,7 +300,7 @@ Page({
           }
         })
       }
-    })  
+    })
 
   },
   getCoupons: function () {

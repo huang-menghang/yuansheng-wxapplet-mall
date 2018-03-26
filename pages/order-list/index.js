@@ -63,44 +63,47 @@ Page({
     var that = this;
     var orderId = e.currentTarget.dataset.id;
     var money = e.currentTarget.dataset.money;
-    console.log(e);
+    console.log(app.globalData.appletMember);
     wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/user/amount',
+      url: app.globalData.serverPath + '/wxapplet/payOrder/wxPay',
       data: {
-        token: app.globalData.token
+        token: app.globalData.token,
+        payPrice: money,
+        id: orderId,
+        appletMemberId: app.globalData.appletMember.id
       },
       success: function (res) {
-        if (res.data.code == 0) {
-          // res.data.data.balance
-          money = money - res.data.data.balance;
-          if (money <= 0) {
-            // 直接使用余额支付
-            wx.request({
-              url: 'https://api.it120.cc/' + app.globalData.subDomain + '/order/pay',
-              method: 'POST',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded'
-              },
-              data: {
-                token: app.globalData.token,
-                orderId: orderId
-              },
-              success: function (res2) {
-                wx.reLaunch({
-                  url: "/pages/order-list/index"
-                });
-              }
-            })
-          } else {
-            wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
-          }
-        } else {
-          wx.showModal({
-            title: '错误',
-            content: '无法获取用户资金信息',
-            showCancel: false
-          })
-        }
+        // if (res.data.code == 0) {
+        //   // res.data.data.balance
+        //   money = money - res.data.data.balance;
+        //   if (money <= 0) {
+        //     // 直接使用余额支付
+        //     wx.request({
+        //       url: 'https://api.it120.cc/' + app.globalData.subDomain + '/order/pay',
+        //       method: 'POST',
+        //       header: {
+        //         'content-type': 'application/x-www-form-urlencoded'
+        //       },
+        //       data: {
+        //         token: app.globalData.token,
+        //         orderId: orderId
+        //       },
+        //       success: function (res2) {
+        //         wx.reLaunch({
+        //           url: "/pages/order-list/index"
+        //         });
+        //       }
+        //     })
+        //   } else {
+        //     wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
+        //   }
+        // } else {
+        //   wx.showModal({
+        //     title: '错误',
+        //     content: '无法获取用户资金信息',
+        //     showCancel: false
+        //   })
+        // }
       }
     })
   },
@@ -165,15 +168,17 @@ Page({
       token: app.globalData.token,
       pageNum: that.data.pageNum,
       pageSize: that.data.pageSize,
-      appletMemberId: app.globalData.appletMemberId
+      appletMemberId: app.globalData.appletMember.id
     };
     postData.status = that.data.currentType;
+    console.log("订单状态：" + that.data.currentType);
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/payOrder',
       data: postData,
       success: (res) => {
         wx.hideLoading();
         var payOrderList = that.data.orderList;
+        console.log(payOrderList);
         if (res.data.items.length > 0){
           if (res.data.lastPage) {
             that.setData({

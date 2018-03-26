@@ -115,7 +115,7 @@ Page({
     var that = this;
     var postData={
       token: app.globalData.token,
-      id: app.globalData.appletMemberId
+      id: app.globalData.appletMember.id
     }
     console.log(postData);
     wx.request({
@@ -138,7 +138,7 @@ Page({
       data: {
         token: app.globalData.token,
         signInPoints: 5,
-        id: app.globalData.appletMemberId
+        id: app.globalData.appletMember.id
       },
       method: 'POST',
       header: {
