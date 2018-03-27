@@ -146,8 +146,7 @@ Page({
       },
       success: function (res) {
         if (res.statusCode == 200) {
-          // that.getUserAmount();
-          that.checkScoreSign();
+          that.checkScoreSign()
         } else {
           wx.showModal({
             title: '错误',
@@ -182,24 +181,12 @@ Page({
       }
     })
   },
-  recharge: function () {
-    wx.navigateTo({
-      url: "/pages/recharge/index"
-    })
-  },
-  withdraw: function () {
-    wx.navigateTo({
-      url: "/pages/withdraw/index"
-    })
-  },
+
   //查看收货地址
   selectAddress:function(){
-    var that = this;
-    console.log("ddd")
+    var that = this
     wx.chooseAddress({
-      success: function (res) {
-        
-       },
+      success: function (res) { },
       fail: function (res) { },
       complete: function (res) { },
     })
@@ -207,8 +194,8 @@ Page({
   //查看优惠券
   selectCoupons:function(){
     console.log("优惠券");
-    wx.openCard({
-      cardList: [],
+    wx.navigateTo({
+      url: '/pages/coupons/index',
     })
   }
 })

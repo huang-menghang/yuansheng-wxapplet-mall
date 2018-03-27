@@ -70,7 +70,7 @@ App({
               if (res.data.attributes.token){
                 console.log(res.data.attributes.token);
                 that.globalData.token = res.data.attributes.token;
-                that.globalData.appletMemberId = res.data.attributes.appletMemberId;
+                that.globalData.appletMember = res.data.attributes.appletMember;
              }else{
                 that.register();
              }
@@ -85,13 +85,8 @@ App({
              })
                 return;
            }
-
-
           }
         })
-
-
-
        }
      })
   },
@@ -133,8 +128,8 @@ App({
   },
   globalData: {
     userInfo: null,
-    serverPath:'http://localhost:8080/yuansheng-weixinshop-server',
+    serverPath: 'http://localhost:8080/yuansheng-weixinshop-server',
     token:null,
-    appletMemberId:null
+    appletMember: null
   }
 })
