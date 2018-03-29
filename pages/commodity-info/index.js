@@ -25,6 +25,7 @@ Page({
     buyNumMax: 0,
     canSubmit: false, //  选中规格尺寸时候是否允许加入购物车
     shopCarInfo: {},
+    comments:{},
     shopType: "addShopCar",//购物类型，加入购物车或立即购买，默认为加入购物车
   },
 
@@ -45,17 +46,18 @@ Page({
           shopNum: res.data.shopNum
         });
       }
-    })
-    console.log("e.commodityId:" + e.commodityId);
+    });
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/commodity/' + e.commodityId,
       success: function (res) {
         console.log("res:" + res.statusCode);
         if (res.statusCode == 200){
+          console.log(res.data[0].comments.length)
           that.setData({
             hasMoreSelect: true,
             commoditySpecations: res.data[0].commoditySpecations,
             commodity: res.data[0],
+            comments: res.data[0].comments,
             commodityPrice: res.data[0].commodityPriceMin,
             swiperImagePath: res.data[0].imagePathMap.carouselImagePaths,
             showImagePath: res.data[0].imagePathMap.showImagePath[0],
@@ -339,5 +341,10 @@ Page({
       content = content + '<p><img src="' + infoImagePaths[0] + '" style=""/></p>';
     }
     return content;
+  },
+
+  //客服服务
+  customerService:function(){
+    
   }
 })

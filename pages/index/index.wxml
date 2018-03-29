@@ -1,29 +1,33 @@
 <view class="container">
-<!--微信轮播切换 -->
-<view class="swiper-container">
-<swiper class="swiper_box" 
-                    autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
-            <block wx:for="{{banners}}" wx:key="id">
-                <swiper-item>
-                    <image bindtap="tapBanner" data-id="{{item.commodityId}}" src="{{item.scrollImagePath}}" class="slide-image" width="750rpx" height="562.5rpx"/>
-                </swiper-item>
-            </block>
-        </swiper>
-        <view class="dots">  
-            <block wx:for="{{banners}}" wx:key="unique">  
-                <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view> 
-            </block>  
-        </view>  
-</view>
-<!--分类列表-->
-<view class="type-container">
-        <scroll-view class="type-navbar" scroll-x="true">
-            <view class="type-box" wx:for-items="{{categories}}" wx:key="id">
-                <view id="{{item.id}}" class="type-navbar-item {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick">
-                    {{item.categoryName}}
-                </view>
-            </view>
-        </scroll-view>
+  <!--微信轮播切换 -->
+  <view class="swiper-container">
+    <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
+      <block wx:for="{{banners}}" wx:key="id">
+        <swiper-item>
+          <image bindtap="tapBanner" data-id="{{item.commodityId}}" src="{{item.scrollImagePath}}" class="slide-image" width="750rpx" height="562.5rpx" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="dots">
+      <block wx:for="{{banners}}" wx:key="unique">
+        <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>
+      </block>
+    </view>
+  </view>
+  <!--分类列表-->
+  <view class="type-container">
+    <scroll-view class="type-navbar" scroll-x="true">
+       <view class="contact">
+        <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27"></contact-button>
+        <view style='position:absolute;bottom:10rpx;'> 客服 </view> 
+      </view> 
+      <view class="type-box" wx:for-items="{{categories}}" wx:key="id">
+        <view id="{{item.id}}" class="type-navbar-item {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick">
+          {{item.categoryName}}
+        </view>
+      </view>
+
+    </scroll-view>
   </view>
   <!--搜索框 -->
   <view class="search-view" style="background:{{ scrollTop === 0 ?'-webkit-linear-gradient(top, rgba(105,195,170, 1), rgba(105,195,170, 0.3))' :( scrollTop<200 ? 'rgba(105,195,170,'+(scrollTop/400+0.3) +')' : 'rgba(105,195,170,1)')  }} ">
@@ -36,41 +40,41 @@
     </view>
   </view>
   <!-- 公告-->
-   <view wx:if="{{noticeList}}" class="notice">
-      <view class="notice_iteml">公告：</view>
-      <swiper wx:if="{{noticeList}}" class="notice_swiper" vertical="true" autoplay="true" circular="true" interval="3000">
-        <navigator wx:for-items="{{noticeList}}" wx:key="id" url="/pages/notice/show?id={{item.id}}" open-type="navigate">
-          <swiper-item >
-            <view class="notice_itemr">{{item.newsTitle}}</view>
-          </swiper-item>
-        </navigator>
-      </swiper>
+  <view wx:if="{{noticeList}}" class="notice">
+    <view class="notice_iteml">公告：</view>
+    <swiper wx:if="{{noticeList}}" class="notice_swiper" vertical="true" autoplay="true" circular="true" interval="3000">
+      <navigator wx:for-items="{{noticeList}}" wx:key="id" url="/pages/notice/show?id={{item.id}}" open-type="navigate">
+        <swiper-item>
+          <view class="notice_itemr">{{item.newsTitle}}</view>
+        </swiper-item>
+      </navigator>
+    </swiper>
+  </view>
+  <!--优惠券 -->
+  <view class="coupons" hidden="{{hasNoCoupons}}">
+    <scroll-view class="coupons-scroll" scroll-x="true">
+      <view class="coupons-item" wx:for-items="{{coupons}}" wx:for-index="idx" wx:key="id" bindtap="gitCoupon" data-id="{{item.id}}">
+        <view style="font-size: 35rpx"> ￥ {{item.moneyReduce}}元 </view>
+        <view> {{item.packetName}} </view>
+        <view> 满 {{item.moneyHreshold}} 元使用 </view>
+        <view wx:if="{{item.dateEndType == 0}}"> {{item.validityTime}} 前有效 </view>
+        <view wx:if="{{item.dateEndType == 1}}"> 领取 5 天内有效 </view>
+      </view>
+    </scroll-view>
+  </view>
+  <!--商品 -->
+  <view class="goods-container">
+    <view class="goods-box" wx:for-items="{{goods}}" wx:key="{{index}}" bindtap="toDetailsTap" data-id="{{item.id}}">
+      <view class="img-box">
+        <image src="{{item.commodityImagePath}}" class="image" mode="aspectFill" lazy-load="true" />
+      </view>
+      <view class="goods-title">{{item.commodityName}}</view>
+      <view style='display:flex;'>
+        <view class="goods-price">¥ {{item.commodityPrice}}</view>
+      </view>
     </view>
- <!--优惠券 -->   
- <view class="coupons" hidden="{{hasNoCoupons}}">
-        <scroll-view class="coupons-scroll" scroll-x="true">
-            <view class="coupons-item" wx:for-items="{{coupons}}" wx:for-index="idx" wx:key="id"  bindtap="gitCoupon" data-id="{{item.id}}">
-               <view style="font-size: 35rpx"> ￥ {{item.moneyReduce}}元 </view>
-               <view> {{item.packetName}} </view>
-               <view> 满 {{item.moneyHreshold}} 元使用 </view>
-               <view wx:if="{{item.dateEndType == 0}}"> {{item.validityTime}} 前有效 </view>
-               <view wx:if="{{item.dateEndType == 1}}"> 领取 5 天内有效 </view>
-            </view>
-        </scroll-view>
-    </view>
-   <!--商品 -->
-    <view class="goods-container">
-        <view class="goods-box" wx:for-items="{{goods}}" wx:key="{{index}}" bindtap="toDetailsTap" data-id="{{item.id}}">
-           <view class="img-box">
-              <image src="{{item.commodityImagePath}}" class="image" mode="aspectFill" lazy-load="true"/>
-           </view>
-           <view class="goods-title">{{item.commodityName}}</view>
-           <view style='display:flex;'>
-           <view class="goods-price">¥ {{item.commodityPrice}}</view>
-           </view>           
-        </view>
-    </view>
-    <view hidden="{{loadingMoreHidden ? true : false}}"    class="no-more-goods">没有更多啦</view>
+  </view>
+  <view hidden="{{loadingMoreHidden ? true : false}}" class="no-more-goods">没有更多啦</view>
 
 
 

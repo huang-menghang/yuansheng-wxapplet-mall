@@ -28,16 +28,14 @@ Page({
     })
   },
   cancelOrderTap: function (e) {
-    var that = this;
-    console.log(e)
+    var that = this
     var id = e.currentTarget.dataset.id;
     wx.showModal({
       title: '提示',
       content: '确定要取消该订单吗？',
       success: function (res) {
         if (res.confirm) {
-          wx.showLoading();
-          console.log("token:" + app.globalData.token)
+          wx.showLoading()
           wx.request({
             url: app.globalData.serverPath + '/wxapplet/payOrder/' + id + "?token=" + app.globalData.token,
             method: 'delete',
@@ -63,7 +61,6 @@ Page({
     var that = this;
     var orderId = e.currentTarget.dataset.id;
     var money = e.currentTarget.dataset.money;
-    console.log(app.globalData.appletMember);
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/payOrder/wxPay',
       data: {
@@ -73,8 +70,7 @@ Page({
         appletMemberId: app.globalData.appletMember.id
       },
       success: function (res) {
-        console.log("统一下单返回参数：" + res.data.timeStamp);
-        that.doWxPay(res.data[0], orderId);
+        that.doWxPay(res.data[0], orderId)
       }
     })
   },
@@ -88,8 +84,7 @@ Page({
       signType: 'MD5',
       paySign: params.paySign,
       success: function (event) {
-        // success
-        console.log(event);
+
         wx.showToast({
           title: '支付成功',
           icon: 'success',
@@ -169,15 +164,13 @@ Page({
       pageSize: that.data.pageSize,
       appletMemberId: app.globalData.appletMember.id
     };
-    postData.status = that.data.currentType;
-    console.log("订单状态：" + that.data.currentType);
+    postData.status = that.data.currentType
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/payOrder',
       data: postData,
       success: (res) => {
         wx.hideLoading();
-        var payOrderList = that.data.orderList;
-        console.log(payOrderList);
+        var payOrderList = that.data.orderList
         if (res.data.items.length > 0){
           if (res.data.lastPage) {
             that.setData({
