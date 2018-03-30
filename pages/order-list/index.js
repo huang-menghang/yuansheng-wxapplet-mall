@@ -1,5 +1,4 @@
-// pages/order-list/index.js
-var wxpay = require('../../utils/pay.js')
+// pages/order-list/index.js 
 var app = getApp()
 Page({
   data: {

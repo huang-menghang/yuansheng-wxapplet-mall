@@ -124,6 +124,7 @@ Page({
           type: ''
         },
         success: function (res) {
+          console.log("优惠券:" + res.data);
           if (res.data) {
             that.setData({
               hasNoCoupons: false,

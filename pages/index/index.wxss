@@ -247,6 +247,6 @@ swiper-item image {
   font-size: 20rpx;
   color: #008000;
   box-sizing: border-box;
-  background: url("http://yuansheng.ngrok.xiaomiqiu.cn/yuansheng-weixinshop-server/wxapplet/images/kefu.png") no-repeat center 21rpx;
+  background: url("https://www.ysdevelop.cn/yuansheng-weixinshop-server/wxapplet/images/kefu.png") no-repeat center 21rpx;
   background-size: 55rpx auto;
 }

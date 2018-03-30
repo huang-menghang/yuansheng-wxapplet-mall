@@ -16,12 +16,12 @@
     border-top: 1rpx solid #eee;
     height:100rpx;
     line-height: 100rpx;
-    background: #fff url(https://cdn.it120.cc/images/weappshop/arrow-right.png) no-repeat 705rpx center;
+    background: #fff url(https://www.ysdevelop.cn/yuansheng-weixinshop-server/wxapplet/images/arrow-right.png) no-repeat 705rpx center;
 }
 .bottom-box .add-btn{
     margin-left: 30rpx;
     padding-left: 70rpx;
-    background: url(https://cdn.it120.cc/images/weappshop/add-addr.png) no-repeat left center;
+    background: url(https://www.ysdevelop.cn/yuansheng-weixinshop-server/wxapplet/images/add-addr.png) no-repeat left center;
     background-size: 40rpx auto;
 }
 .coupons-item{
