@@ -101,11 +101,7 @@ Page({
         return;
       }
       postData.expressAddressId = that.data.curAddressData.id;
-    }
-    // if (that.data.curCoupon) {
-    //   postData.couponId = that.data.curCoupon.id;
-    // }
-
+    };
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/payOrder',
       method: 'POST',
@@ -199,8 +195,7 @@ Page({
   },
 
   addAddress: function () {
-    var that = this;
-    // console.log("添加地址")
+    var that = this
     wx.chooseAddress({
       success: function (res) {
         var provinceName = res.provinceName;
@@ -299,24 +294,12 @@ Page({
       },
       success: function (res) {
         if (res.statusCode == 200){
-          console.log("长度：" + res.data[0].moneyReduce);
+
           that.setData({
             hasNoCoupons:false,
             coupons:res.data
-          })
-          console.log("长度2：" + that.data.coupons[0].moneyReduce);
-        }
-        // if (res.data.code == 0) {
-        //   var coupons = res.data.data.filter(entity => {
-        //     return entity.moneyHreshold <= that.data.allGoodsAndYunPrice;
-        //   });
-        //   if (coupons.length > 0) {
-        //     that.setData({
-        //       hasNoCoupons: false,
-        //       coupons: coupons
-        //     });
-        //   }
-        // }
+          });
+        };
       }
     })
   },
@@ -329,14 +312,13 @@ Page({
       });
       return;
     }
-    console.log("满："+this.data.coupons[selIndex].moneyHreshold);
-    console.log("减：" + this.data.coupons[selIndex].moneyReduce);
-    if (this.data.allGoodsPrice > this.data.coupons[selIndex].moneyHreshold){
+    if (this.data.allGoodsPrice >= this.data.coupons[selIndex].moneyHreshold){
       let payPrice = this.data.allGoodsPrice - this.data.coupons[selIndex].moneyReduce;
       this.setData({
         youhuijine: this.data.coupons[selIndex].moneyReduce,
         curCoupon: this.data.coupons[selIndex],
-        payPrice: payPrice
+        payPrice: payPrice,
+        fullReduction:true
       });
     }else{
       this.setData({
