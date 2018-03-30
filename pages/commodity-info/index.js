@@ -51,8 +51,7 @@ Page({
       url: app.globalData.serverPath + '/wxapplet/commodity/' + e.commodityId,
       success: function (res) {
         console.log("res:" + res.statusCode);
-        if (res.statusCode == 200){
-          console.log(res.data[0].comments.length)
+        if (res.statusCode == 200 && res.data){ 
           that.setData({
             hasMoreSelect: true,
             commoditySpecations: res.data[0].commoditySpecations,
@@ -66,8 +65,13 @@ Page({
         }else{
           wx.showModal({
             title: '提示',
-            content: '该商品不存在，请重新选则商品！',
-            showCancel: false
+            content: '商品不存在，请重选商品！',
+            showCancel: false,
+            success:function(){
+              wx.navigateBack({
+                delta: 1
+              })
+            }
           })
         }
         WxParse.wxParse('article', 'html', that.data.commodityIntroduceContent, that, 5);
