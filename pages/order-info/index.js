@@ -23,8 +23,7 @@ Page({
         token: app.globalData.token
       },
       success: (res) => {
-        wx.hideLoading();
-        console.log("订单：" + res.data[0].expressId);
+        wx.hideLoading(); 
         if (!res.data[0]) {
           wx.showModal({
             title: '错误',

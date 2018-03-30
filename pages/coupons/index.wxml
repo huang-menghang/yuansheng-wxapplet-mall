@@ -4,7 +4,6 @@
       <view style="font-size: 50rpx"> ￥ {{item.moneyReduce}}元 </view>
       <view> {{item.packetName}} </view>
       <view> 满 {{item.moneyHreshold}} 元使用 </view>
-      <!-- <view> {{item.dateEnd}} 前有效 </view> -->
     </view>
   </view>
   <view style="height:100rpx;background-color:#fff;width:100%;"></view>

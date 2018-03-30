@@ -8,9 +8,7 @@ Page({
   data: {
     goodsList: [],
     isNeedLogistics: 0, // 是否需要物流信息
-    allGoodsPrice: 0,
-    // yunPrice: 0,
-    // allGoodsAndYunPrice: 0,
+    allGoodsPrice: 0, 
     goodsJsonStr: "",
     orderType: "", //订单类型，购物车下单或立即支付下单，默认是购物车，
 
@@ -129,8 +127,7 @@ Page({
           that.setData({
             isNeedLogistics: res.data.data.isNeedLogistics,
             allGoodsPrice: res.data.data.amountTotle
-          });
-          
+          }); 
           return;
         };
         wx.redirectTo({
@@ -141,8 +138,7 @@ Page({
   },
 
   initShippingAddress: function () {
-    var that = this;
-    console.log("userInfo" + app.globalData.userInfo);
+    var that = this; 
     var id = app.globalData.appletMember.id;
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/address/' + id,
@@ -174,16 +170,14 @@ Page({
 
     for (let i = 0; i < goodsList.length; i++) {
       let carShopBean = goodsList[i];
-      allGoodsPrice += carShopBean.commodityPrice * carShopBean.number;
-
+      allGoodsPrice += carShopBean.commodityPrice * carShopBean.number; 
       var goodsJsonStrTmp = '';
       if (i > 0) {
         goodsJsonStrTmp = ",";
       }
 
       goodsJsonStrTmp += '{"commodityId":' + carShopBean.commodityId + ';"commodityNumber":' + carShopBean.number + ';"specationId":' + carShopBean.specation.id + ';"commodityPrice":' + carShopBean.specation.commodityPrice + '}';
-      goodsJsonStr += goodsJsonStrTmp;
-      console.log("goodsJsonStrTmp" + i + ":" + goodsJsonStrTmp);
+      goodsJsonStr += goodsJsonStrTmp; 
     }
     that.setData({
       isNeedLogistics: 1,
@@ -203,8 +197,7 @@ Page({
         var diatrictName = res.countyName;
         var address = res.detailInfo;
         var mobile = res.telNumber;
-        var consignee = res.userName;
-        console.log("consignee:" + consignee);
+        var consignee = res.userName; 
         wx.request({
           url: app.globalData.serverPath + '/wxapplet/address',
           method: "POST",
@@ -227,8 +220,7 @@ Page({
                 title: '提示',
                 content: res.data.msg,
               })
-            } else {
-              console.log("地址ID:" + res.data[0].id);
+            } else { 
               that.setData({
                 curAddressData: res.data[0]
               })
@@ -239,8 +231,7 @@ Page({
     })
   },
   selectAddress: function () {
-    var that = this
-    console.log("选择地址")
+    var that = this 
     wx.chooseAddress({
       success: function (res) {
         var provinceName = res.provinceName;
@@ -271,8 +262,7 @@ Page({
                 title: '提示',
                 content: res.data.msg,
               })
-            } else {
-              console.log("地址ID:" + res.data[0].id);
+            } else { 
               that.setData({
                 curAddressData: res.data[0]
               })

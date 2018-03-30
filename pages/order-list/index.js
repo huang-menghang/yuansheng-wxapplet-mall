@@ -83,8 +83,7 @@ Page({
       package: params.packageValue,
       signType: 'MD5',
       paySign: params.paySign,
-      success: function (event) {
-
+      success: function (event) { 
         wx.showToast({
           title: '支付成功',
           icon: 'success',
@@ -92,23 +91,9 @@ Page({
         });
         that.getOrderStatistics();
         that.getPayOrdersList();
-      },
-      fail: function (error) {
-        // fail     
-        console.log("支付失败")
-        console.log(error)
-      }
+      } 
     })
-  },
-
-  onLoad: function (options) {
-    // 生命周期函数--监听页面加载
-
-  },
-  onReady: function () {
-    // 生命周期函数--监听页面初次渲染完成
-
-  },
+  }, 
   getOrderStatistics: function () {
     var that = this;
     wx.request({
@@ -191,20 +176,7 @@ Page({
         }
       }
     });
-  },
-
-  onHide: function () {
-    // 生命周期函数--监听页面隐藏
-
-  },
-  onUnload: function () {
-    // 生命周期函数--监听页面卸载
-    
-  },
-  onPullDownRefresh: function () {
-    // 页面相关事件处理函数--监听用户下拉动作
-
-  },
+  }, 
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
     if (this.data.loadingMoreHidden){

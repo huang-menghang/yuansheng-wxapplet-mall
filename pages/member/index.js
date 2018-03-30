@@ -116,8 +116,7 @@ Page({
     var postData={
       token: app.globalData.token,
       id: app.globalData.appletMember.id
-    }
-    console.log(postData);
+    } 
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/member/todaySigned',
       data: postData,
@@ -175,8 +174,7 @@ Page({
           }
         })
       },
-      fail(res) {
-        console.log(res);
+      fail(res) { 
         wx.openSetting({});
       }
     })
@@ -192,8 +190,7 @@ Page({
     })
   },
   //查看优惠券
-  selectCoupons:function(){
-    console.log("优惠券");
+  selectCoupons:function(){ 
     wx.navigateTo({
       url: '/pages/coupons/index',
     })

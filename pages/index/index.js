@@ -50,8 +50,7 @@ Page({
       wx.request({
         url: app.globalData.serverPath +"/wxapplet/category",
         success: function (res) {
-          var categories = [{ id: 0, categoryName: "全部" }];
-          console.log(res);
+          var categories = [{ id: 0, categoryName: "全部" }]; 
           if (res.statusCode == 200) {
             for (var i = 0; i < res.data.length; i++) {
               categories.push(res.data[i]);
@@ -72,22 +71,17 @@ Page({
     },
     //轮播事件
     swiperchange: function (e) {
-      //console.log(e.detail.current)
       this.setData({
         swiperCurrent: e.detail.current
       })
     },
     scroll: function (e) {
-      //  console.log(e) ;
       var that = this, scrollTop = that.data.scrollTop;
       that.setData({
         scrollTop: e.detail.scrollTop
       })
-      // console.log('e.detail.scrollTop:'+e.detail.scrollTop) ;
-      // console.log('scrollTop:'+scrollTop)
     },
-    tapBanner:function(e){
-      console.log(e);
+    tapBanner:function(e){ 
       if(e.currentTarget.dataset.id != null){
         wx.navigateTo({
           url: '/pages/commodity-info/index?commodityId=' + e.currentTarget.dataset.id,
@@ -108,10 +102,8 @@ Page({
       wx.request({
         url: app.globalData.serverPath + '/wxapplet/news',
         data: { pageSize: 5 },
-        success: function (res) {
-          console.log(res);
-          if (res.statusCode == 200) {
-            console.log(res.data);
+        success: function (res) { 
+          if (res.statusCode == 200) { 
             that.setData({
               noticeList: res.data
             });
@@ -125,8 +117,7 @@ Page({
       })
     },
     getCoupons: function () {
-      var that = this;
-      console.log("获取优惠卷");
+      var that = this; 
       wx.request({
         url: app.globalData.serverPath + '/wxapplet/coupon',
         data: {
@@ -143,8 +134,7 @@ Page({
       })
     },
     getGoodsList: function (categoryId){
-      var that = this;
-      console.log("页数:  "+this.data.page);
+      var that = this; 
       wx.request({
         url: app.globalData.serverPath + "/wxapplet/category/" + categoryId +"/commodity",
         data:{
@@ -152,8 +142,7 @@ Page({
           pageNum:that.data.page,
           pageSize:that.data.pageSize
         },
-        success: function (res) {
-          console.log(res);
+        success: function (res) { 
           var goodslistTem = that.data.goods;
           if (that.data.pageNum == 1){
             goodslistTem = []
@@ -187,12 +176,6 @@ Page({
         loadingMoreHidden:true
       })
       this.getGoodsList(this.data.activeCategoryId);
-    },
-    /**
-      * 页面相关事件处理函数--监听用户下拉动作
-      */
-    onPullDownRefresh: function () {
-      console.log("下拉");
     },
     /**
      * 页面上拉触底事件的处理函数

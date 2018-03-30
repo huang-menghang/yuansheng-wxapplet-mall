@@ -17,10 +17,6 @@
   <!--分类列表-->
   <view class="type-container">
     <scroll-view class="type-navbar" scroll-x="true">
-       <!-- <view class="contact">
-        <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27"></contact-button>
-        <view style='position:absolute;bottom:10rpx;'> 客服 </view> 
-      </view>  -->
       <view class="type-box" wx:for-items="{{categories}}" wx:key="id">
         <view id="{{item.id}}" class="type-navbar-item {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick">
           {{item.categoryName}}

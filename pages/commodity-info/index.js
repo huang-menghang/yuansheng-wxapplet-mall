@@ -49,8 +49,7 @@ Page({
     });
     wx.request({
       url: app.globalData.serverPath + '/wxapplet/commodity/' + e.commodityId,
-      success: function (res) {
-        console.log("res:" + res.statusCode);
+      success: function (res) { 
         if (res.statusCode == 200 && res.data){ 
           that.setData({
             hasMoreSelect: true,
@@ -310,8 +309,7 @@ Page({
     var shopCarMap = {};
     shopCarMap.commodityId = this.data.commodity.id;
     shopCarMap.showImagePath = this.data.showImagePath;
-    shopCarMap.commodityName = this.data.commodity.commodityName;
-    console.log(this.data.selectSpecation);
+    shopCarMap.commodityName = this.data.commodity.commodityName; 
     shopCarMap.specation = this.data.selectSpecation;
     shopCarMap.commodityPrice = this.data.commodityPrice;
     shopCarMap.left = "";
@@ -351,10 +349,5 @@ Page({
       content = content + '<p><img src="' + infoImagePaths[0] + '" style=""/></p>';
     }
     return content;
-  },
-
-  //客服服务
-  customerService:function(){
-    
-  }
+  } 
 })
