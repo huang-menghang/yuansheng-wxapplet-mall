@@ -63,6 +63,12 @@ Page({
             showImagePath: res.data[0].imagePathMap.showImagePath[0],
             commodityIntroduceContent: that.getCommodityIntroduceContent(res.data[0].imagePathMap.infoImagePaths),
           });
+        }else{
+          wx.showModal({
+            title: '提示',
+            content: '该商品不存在，请重新选则商品！',
+            showCancel: false
+          })
         }
         WxParse.wxParse('article', 'html', that.data.commodityIntroduceContent, that, 5);
       }

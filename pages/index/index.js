@@ -32,7 +32,6 @@ Page({
       wx.request({
         url: app.globalData.serverPath +"/wxapplet/scrollImage",
         success:function(res){
-          console.log("code:" + res.data.code);
           if (res.data.code == 404){
             wx.showModal({
               title: '提示',
@@ -42,7 +41,6 @@ Page({
          
           }
           else{
-            console.log(res.data);
             that.setData({
                banners: res.data
              });
