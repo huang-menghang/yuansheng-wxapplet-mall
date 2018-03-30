@@ -91,7 +91,8 @@ App({
   },
   globalData: {
     userInfo: null,
-    serverPath: 'http://localhost:8080/yuansheng-weixinshop-server',
+    // serverPath: 'http://localhost:8080/yuansheng-weixinshop-server',
+    serverPath: 'https://www.ysdevelop.cn/yuansheng-weixinshop-server',
     token:null,
     appletMember: null
   }
